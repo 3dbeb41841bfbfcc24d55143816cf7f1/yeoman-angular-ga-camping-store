@@ -30,8 +30,6 @@ cd ga-camping-store
 yo gulp-angular
 ```
 
-> If you get a "Error: Cannot find module 'download'", run `npm install -g download`
-
 When prompted, select all of the generator defaults except when asked "Would you like to use a REST resource library?" choose "None, $http is enough!"
 
 > It will be approximately the 4th question!
@@ -60,17 +58,7 @@ It's time to use Gulp tasks:
 - `$ gulp protractor:dist` to launch your e2e tests with Protractor on the dist files
 ```
 
-1c-a (ASK MIKE). Add the following to line 44 of `src/index.html` to bring in the ngAnimate module.
-
-```html
-<script src="/bower_components/angular-animate/angular-animate.js"></script>
-```
-
 1c. Test it out
-
-```bash
-gulp
-```
 
 ```bash
 gulp serve
@@ -310,6 +298,7 @@ touch src/app/item/item.show.controller.js
   </div>
 </div>
 ```
+> Why aren't we using an `ng-controller` directive here?
 
 3d. Edit `src/app/item/show.html` and add the following:
 
@@ -469,7 +458,7 @@ Replace the `div class="collapse navbar-collapse"` in `src/app/components/navbar
 In the above code we have:
 
 * Used `ng-class` and `$state.includes` to set the `active` CSS class to the tab that is currently active.
-* Replaced ng-href with ui-sref to specify the state (url/route) that we want to navigate to for each link.
+* Replaced `ng-href` with `ui-sref` to specify the state (url/route) that we want to navigate to for each link.
 
 5c. Save your work:
 
@@ -690,10 +679,13 @@ git commit -m "Added some SCSS"
 git tag step6
 ```
 
-### Step 7 - Add the Images
+### Step 7 - Add the Images and a Search Filter
 
-7a. Grab the images folder from Slack and add it to `src/assets`. You'll need to add the `/logos` path to your `app/main/main.html` file to make the logos render.
+7a. Run this in the `src/assets/images` folder to grab the camping store item images from GitHub. 
 
+```bash
+svn export https://github.com/drmikeh/ga_camping_store_angular/trunk/src/assets/images/inventory
+```
 7b. Let's add some more structure to our index page. Replace the contents of `app/item/index.html` with the following.
 
 ```html
@@ -740,7 +732,34 @@ git tag step6
 </section>
 ```
 
-7c. Save your work:
+7c. Let's add a Search Filter to our `ItemIndexController` in `item/item.index.controller.js`. Let's add this below our controller module.
+
+```javascript
+angular.module('gaCampingStore').
+  filter('inventory', function() {
+
+    function isMatch(str, pattern) {
+      return str.toLowerCase().indexOf(pattern.toLowerCase()) !== -1;
+    }
+
+    return function(inventory, searchText) {
+      var items = {
+          searchText: searchText,
+          out: []
+      };
+      angular.forEach(inventory, function (item) {
+        if (isMatch(item.category   , this.searchText) ||
+            isMatch(item.name       , this.searchText) ||
+            isMatch(item.description, this.searchText) ) {
+          this.out.push(item);
+        }
+      }, items);
+      return items.out;
+    };
+  });
+```
+
+7d. Save your work:
 
 ```bash
 git add -A
@@ -849,29 +868,6 @@ angular.module('gaCampingStore')
     };
 
   });
-
-angular.module('gaCampingStore').
-  filter('inventory', function() {
-
-    function isMatch(str, pattern) {
-      return str.toLowerCase().indexOf(pattern.toLowerCase()) !== -1;
-    }
-
-    return function(inventory, searchText) {
-      var items = {
-          searchText: searchText,
-          out: []
-      };
-      angular.forEach(inventory, function (item) {
-        if (isMatch(item.category   , this.searchText) ||
-            isMatch(item.name       , this.searchText) ||
-            isMatch(item.description, this.searchText) ) {
-          this.out.push(item);
-        }
-      }, items);
-      return items.out;
-    };
-  });
 })();
 ```
 
@@ -899,3 +895,7 @@ git add -A
 git commit -m "Added Shopping Cart"
 git tag step8
 ```
+
+###BONUS
+
+-  Add some `ng-class`attributes to your HTML.
