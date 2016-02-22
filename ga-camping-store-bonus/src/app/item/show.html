@@ -1,0 +1,29 @@
+<section class="container-fluid item">
+  <div class="row">
+    <h2 class="text-center">{{ ctrl.item.name }}</h2>
+    <div class="col-md-4 col-md-offset-2">
+      <dl class="dl-horizontal">
+        <dt>Category:</dt>
+        <dd>{{ ctrl.item.category }}</dd>
+        <dt>Price:</dt>
+        <dd>{{ ctrl.item.price | currency }}</dd>
+        <dt>Rating:</dt>
+        <dd>{{ ctrl.item.rating }} / 5</dd>
+        <dt>Description:</dt>
+        <dd>{{ ctrl.item.description }}</dd>
+        <dt>Quantity:</dt>
+        <dd>{{ ctrl.item.quantity }}</dd>
+      </dl>
+
+      <div class="back">
+        <button type="button"
+                class="btn btn-primary"
+                onclick="window.history.back()">Back</button>
+      </div>
+    </div>
+
+    <div class="col-md-4 item-image">
+      <img class="middle" width=200px src="/assets/images/inventory/{{ctrl.item.imageFile}}"/>
+    </div>
+  </div>
+</section>

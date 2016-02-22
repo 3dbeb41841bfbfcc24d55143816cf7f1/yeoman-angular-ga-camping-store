@@ -1,0 +1,54 @@
+<section class="container-fluid main">
+  <div class="row">
+    <article class="items col-sm-9">
+      <section class="search">
+        <form class="navbar-form" role="search">
+          <div class="form-group"><input type="text" class="form-control" name="search" ng-model="ctrl.searchText" placeholder="Search"></div>
+          <button type="clear"  class="btn btn-warning" ng-click="ctrl.searchText = ''">Reset</button>
+        </form>
+      </section>
+
+      <div class="list-group">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 animate-inventory"
+               ng-repeat="item in filteredItems = ( ctrl.inventory | inventory : ctrl.searchText | orderBy: ['category', 'price'] )">
+            <a ng-click="ctrl.goItem(item)" class="list-group-item">
+              <h3>{{ item.name }}</h3>
+              <article class="row">
+                <div class="col-xs-5">
+                  <img class="middle" width=96px src="/assets/images/inventory/{{item.imageFile}}"/>
+                </div>
+                <div class="col-xs-7">
+                  <dl class="dl-horizontal">
+                    <dt>Category:</dt><dd>{{ item.category }}</dd>
+                    <dt>Price:</dt><dd>{{ item.price | currency }}</dd>
+                    <dt>Rating:</dt><dd>{{ item.rating }} / 5</dd>
+                    <dt>Quantity:</dt><dd>{{ item.quantity }}</dd>
+                  </dl>
+                </div>
+              </article>
+            </a>
+            <div class="text-center">
+              <button class="btn btn-sm btn-success" id="sold-out-button" ng-click="ctrl.addItem(item)" ng-disabled="item.quantity < 1" ng-class="{'btn-danger': item.quantity == 0}">Add to Cart</button>
+            </div>
+          </div>
+          <div class="animate-inventory text-center" ng-hide="filteredItems.length">
+            <h3>No items match your search.</h3>
+          </div>
+        </div>
+      </div>
+    </article>
+    <article class="col-sm-3">
+  <h2>Your Cart:</h2>
+  <ul>
+    <li class="cart animate-cart" ng-repeat="item in ctrl.cart">
+      <span>{{ item.qty + ' x ' + item.name + ': ' + (ctrl.getCost(item) | currency) }}</span>
+      <button class="btn btn-danger btn-xs" ng-click="ctrl.removeItem(item)">Remove Item</button>
+    </li>
+  </ul>
+  <h3>Total: {{ ctrl.getTotal() | currency }}</h3>
+  <br>
+  <button class="btn btn-danger" ng-click="ctrl.clearCart()">Clear Cart</button>
+</article>
+  </div>
+</section>
