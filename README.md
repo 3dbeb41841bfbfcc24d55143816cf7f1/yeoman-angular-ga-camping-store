@@ -898,4 +898,7 @@ git tag step8
 
 ###BONUS
 
--  Add some `ng-class`attributes to your HTML.
+1. Try adding `quantity` to your inventory items 
+2. Try adding `ng-class` to a few HTML elements. Maybe an item div changes color once you’ve added it to the cart and changes a different color if it’s sold out.
+3. Add the ability to remove one item at a time from the cart rather than an all or nothing removal.
+4. Try adding a form to add new items to your inventory
