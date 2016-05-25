@@ -735,8 +735,8 @@ svn export https://github.com/drmikeh/ga_camping_store_angular/trunk/src/assets/
 7c. Let's add a Search Filter to our `ItemIndexController` in `item/item.index.controller.js`. Let's add this below our controller module.
 
 ```javascript
-angular.module('gaCampingStore').
-  filter('inventory', function() {
+angular.module('gaCampingStore')
+	.filter('inventory', function() {
 
     function isMatch(str, pattern) {
       return str.toLowerCase().indexOf(pattern.toLowerCase()) !== -1;
@@ -830,12 +830,12 @@ touch src/app/cart/cart.service.js
 8c. We need to inject `CartService` to our `ItemsIndexController`:
 
 ```javascript
-(function() {
-  'use strict';
+angular
+    .module('gaCampingStore')
+    .controller('ItemIndexController', ItemIndexController);
 
-angular.module('gaCampingStore')
-  .controller('ItemIndexController', function($state, ItemService, CartService) {
-
+  /** @ngInject */
+  function ItemIndexController(ItemService, $state, CartService) {
     var vm = this;
 
     vm.searchText = '';
@@ -866,9 +866,7 @@ angular.module('gaCampingStore')
       console.log('goItem: ' + item.id);
       $state.go( 'itemDetail', { itemId : item.id } );
     };
-
-  });
-})();
+  };
 ```
 
 8d. Add HTML for the Shopping Cart in `app/item/index.html`. Add the following code to the bottom of the page just inside the last `</div>`.
