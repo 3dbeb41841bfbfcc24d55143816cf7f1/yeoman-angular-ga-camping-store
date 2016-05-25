@@ -783,7 +783,7 @@ touch src/app/cart/cart.service.js
   'use strict';
 
   angular.module('gaCampingStore')
-  .service('CartService', function() {
+  	.service('CartService', function() {
 
     var vm = this;
 
